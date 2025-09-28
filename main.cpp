@@ -1,12 +1,8 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
 #include <array>
 #include <fstream>
 using namespace std;
-
-// Comment #1: Define a constant integer W20 with a value of 20 to be used for formatting output width.
-const int W20 = 20;
 
 // Comment #2: Define a constant integer SIZE with a value of 4 to represent the number of movies.
 const int SIZE = 4;
@@ -29,20 +25,19 @@ class Movie
         string getScreenWriter() const { return screenWriter; }
         void setScreenWriter(const string& screenWriter) { this->screenWriter = screenWriter; }
         void print() const {
-            cout << setw(W20) << "Movie: " << screenWriter << endl; 
-            cout << setw(W20) << "\tYear released: " << year << endl;
-            cout << setw(W20) << "\tScreenwriter:  " << title << endl << endl;
+            cout << "\tMovie: " << screenWriter << endl; 
+            cout << "\t\tYear released: " << year << endl;
+            cout << "\t\tScreenwriter: " << title << endl << endl;
         }
 };
 
 int main()
 {
-    // Comment #6: In the main function, set the output format to fixed with a precision of 2 decimal places.
-    cout << fixed << setprecision(2);
     array<Movie, SIZE> movies;
     string title;
     int year;
     string screenWriter;
+    int idx = 0;
 
     ifstream fin("input.txt");
     if (!fin.good()) {
@@ -50,7 +45,7 @@ int main()
         return 1;
     }
 
-    while (fin >> title)
+    while (getline(fin, title))
     {
        fin.ignore();
        Movie temp;
@@ -58,8 +53,10 @@ int main()
        fin >> year;
        temp.setYear(year);
        fin.ignore();
-       fin >> screenWriter;
+       getline(fin, screenWriter);
        temp.setScreenWriter(screenWriter);
+
+       movies[idx++] = temp;
     }
 
     fin.close();
